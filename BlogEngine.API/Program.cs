@@ -57,6 +57,7 @@ builder.Services.AddDbContext<BlogEngineContext>(options => options.UseLazyLoadi
 var mappingConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new PostMappingConfiguration());
+    mc.AddProfile(new UserMappingConfiguration());
 });
 IMapper mapper = mappingConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);

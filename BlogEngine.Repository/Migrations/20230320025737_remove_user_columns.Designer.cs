@@ -4,6 +4,7 @@ using BlogEngine.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogEngine.Repository.Migrations
 {
     [DbContext(typeof(BlogEngineContext))]
-    partial class BlogEngineContextModelSnapshot : ModelSnapshot
+    [Migration("20230320025737_remove_user_columns")]
+    partial class remove_user_columns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +51,6 @@ namespace BlogEngine.Repository.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Comments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreationDate = new DateTime(2023, 3, 27, 11, 58, 50, 80, DateTimeKind.Local).AddTicks(5487),
-                            Description = "Nice blog!",
-                            PostId = 2
-                        });
                 });
 
             modelBuilder.Entity("BlogEngine.Utilities.Entities.Post", b =>
@@ -101,29 +95,6 @@ namespace BlogEngine.Repository.Migrations
                     b.HasIndex("WriterId");
 
                     b.ToTable("Posts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreationDate = new DateTime(2023, 3, 27, 11, 58, 50, 80, DateTimeKind.Local).AddTicks(5462),
-                            Description = "This is the first post",
-                            Status = "PENDING APPROVAL",
-                            Title = "First Post",
-                            WriterId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreationDate = new DateTime(2023, 3, 27, 11, 58, 50, 80, DateTimeKind.Local).AddTicks(5472),
-                            Description = "This is a published post",
-                            EditorComments = "Good job",
-                            EditorId = 3,
-                            RevisionDate = new DateTime(2023, 3, 27, 11, 58, 50, 80, DateTimeKind.Local).AddTicks(5473),
-                            Status = "APPROVED",
-                            Title = "Post Completed",
-                            WriterId = 2
-                        });
                 });
 
             modelBuilder.Entity("BlogEngine.Utilities.Entities.Profile", b =>
@@ -141,23 +112,6 @@ namespace BlogEngine.Repository.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Profiles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Public"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Writer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Editor"
-                        });
                 });
 
             modelBuilder.Entity("BlogEngine.Utilities.Entities.User", b =>
@@ -192,35 +146,6 @@ namespace BlogEngine.Repository.Migrations
                     b.HasIndex("ProfileId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "public@blogengine.com",
-                            Name = "public",
-                            ProfileId = 1,
-                            UserName = "public",
-                            UserPassword = "public"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "writer@blogengine.com",
-                            Name = "writer",
-                            ProfileId = 2,
-                            UserName = "writer",
-                            UserPassword = "writer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "editor@blogengine.com",
-                            Name = "editor",
-                            ProfileId = 3,
-                            UserName = "editor",
-                            UserPassword = "editor"
-                        });
                 });
 
             modelBuilder.Entity("BlogEngine.Utilities.Entities.Comment", b =>

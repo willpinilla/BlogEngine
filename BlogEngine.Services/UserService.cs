@@ -1,4 +1,5 @@
-﻿using BlogEngine.Repository.Contracts;
+﻿using AutoMapper;
+using BlogEngine.Repository.Contracts;
 using BlogEngine.Services.Contracts;
 using BlogEngine.Utilities.Entities;
 using BlogEngine.Utilities.Helpers;
@@ -15,14 +16,16 @@ namespace BlogEngine.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly AppSettingsDTO _appSettings;
+        private readonly IMapper _mapper;
 
-        public UserService (IUserRepository userRepository, IOptions<AppSettingsDTO> appSettings)
+        public UserService (IUserRepository userRepository, IOptions<AppSettingsDTO> appSettings, IMapper mapper)
         {
             _userRepository = userRepository;
             _appSettings = appSettings.Value;
+            _mapper = mapper;
         }
 
-        public async Task<User> ValidateUser(UserPayLoad userPayLoad)
+        public async Task<UserDTO> ValidateUser(UserPayLoad userPayLoad)
         {
             try
             {
@@ -43,14 +46,14 @@ namespace BlogEngine.Services
                         new Claim(ClaimTypes.Name, user.Name),
                         new Claim(ClaimTypes.Email, user.Email)
                     }),
-                    Expires = DateTime.UtcNow.AddSeconds(user.ExpiresIn.Value),
+                    Expires = DateTime.UtcNow.AddSeconds(user.ExpiresIn),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 user.Token = tokenHandler.WriteToken(token);
-
-                return user.WithoutPassword();
+                
+                return user;
             }
             catch (Exception ex)
             {
@@ -63,11 +66,12 @@ namespace BlogEngine.Services
             return await _userRepository.ValidateUserProfile(user);
         }
 
-        private async Task<User> ValidateUserDB(UserPayLoad userPayLoad)
+        private async Task<UserDTO> ValidateUserDB(UserPayLoad userPayLoad)
         {
             var user = await _userRepository.ValidateUser(userPayLoad);
             if (user == null) { return null; }
-            return user;
+            var result = _mapper.Map<UserDTO>(user);
+            return result;
         }
     }
 }

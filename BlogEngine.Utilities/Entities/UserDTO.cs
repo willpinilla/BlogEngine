@@ -8,18 +8,14 @@ using System.Threading.Tasks;
 
 namespace BlogEngine.Utilities.Entities
 {
-    public class User
+    public class UserDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string UserName { get; set; }
-        public string UserPassword { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public int ProfileId { get; set; }
-
-        [ForeignKey("ProfileId")]
-        public virtual Profile Profile { get; set; }
+        public double ExpiresIn { get; set; }
+        public string Token { get; set; }
     }
 }

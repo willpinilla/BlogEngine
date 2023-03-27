@@ -18,7 +18,7 @@ namespace BlogEngine.API.Controllers
 
         [HttpPost]
         [Route("ValidateUser")]
-        public async Task<User> ValidateUser([FromBody] UserPayLoad userPayLoad)
+        public async Task<UserDTO> ValidateUser([FromBody] UserPayLoad userPayLoad)
         {
             return await _userService.ValidateUser(userPayLoad);
         }

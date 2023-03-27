@@ -5,7 +5,7 @@ namespace BlogEngine.Services.Contracts
 {
     public interface IUserService
     {
-        Task<User> ValidateUser(UserPayLoad userPayLoad);
+        Task<UserDTO> ValidateUser(UserPayLoad userPayLoad);
         Task<bool> ValidateUserProfile(User user);
     }
 }
